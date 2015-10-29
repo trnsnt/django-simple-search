@@ -22,10 +22,10 @@ def search_for_term(model, term, fields, number=10):
     objects = []
     for search in searcher:
         curr_filter = reduce(operator.or_, [Q(('%s__%s' % (field, search), term)) for field in fields])
-        # Need to search for number + len(objects) to handle duplicate objects
-        objects = uniquify(objects, model.objects.filter(curr_filter)[:number + len(objects)])[:number]
+        # Need to search for number to handle duplicate objects
+        objects = uniquify(objects, model.objects.filter(curr_filter)[:number])[:number]
         if len(objects) == number:
-            break
+            return objects
     return objects
 
 
